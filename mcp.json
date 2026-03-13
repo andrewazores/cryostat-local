@@ -1,0 +1,18 @@
+{
+    "mcpServers": {
+        "cryostat-local": {
+            "command": "jbang",
+            "args": [
+                "--quiet",
+                "org.acme:cryostat-mcp:1.0.0-SNAPSHOT:runner"
+            ],
+            "env": {
+                "QUARKUS_REST_CLIENT_CRYOSTAT_URL": "http://localhost:8282/",
+                "QUARKUS_SMALLRYE_GRAPHQL_CLIENT_CRYOSTAT_URL": "http://localhost:8282/api/v4/graphql",
+                "CRYOSTAT_AUTH_VALUE": "unused"
+            },
+            "disabled": false,
+            "alwaysAllow": []
+        }
+    }
+}
