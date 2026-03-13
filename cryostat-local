@@ -1,0 +1,54 @@
+#!/usr/bin/env bash
+
+DIR="$(dirname "$(readlink -f "$0")")"
+
+function cleanup() {
+    docker compose --file "${DIR}/compose.yml" down --volumes
+    kill "${agent_pid}"
+}
+trap cleanup EXIT
+
+cleanup
+docker compose --file "${DIR}/compose.yml" up --detach
+
+java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
+    --watch \
+    -Dio.cryostat.agent.shaded.org.slf4j.simpleLogger.defaultLogLevel=error \
+    -Dcryostat.agent.baseuri=http://localhost:8080 \
+    -Dcryostat.agent.webclient.tls.required=false \
+    -Dcryostat.agent.callback.scheme=http \
+    -Dcryostat.agent.callback.host-name=localhost \
+    -Dcryostat.agent.harvester.template=Continuous \
+    -Dcryostat.agent.harvester.period-ms=10000 \
+    -Dcryostat.agent.harvester.max-files=1 &
+
+agent_pid=$!
+
+# FIXME use a real strategy to wait for db/s3 to be ready
+sleep 10
+
+AWS_ACCESS_KEY_ID=access_key \
+    AWS_SECRET_ACCESS_KEY=secret_key \
+    CRYOSTAT_AGENT_TLS_REQUIRED="false" \
+    CRYOSTAT_AUDIT_ENABLED="true" \
+    CRYOSTAT_DISCOVERY_DOCKER_ENABLED="true" \
+    CRYOSTAT_DISCOVERY_JDP_ENABLED="true" \
+    CRYOSTAT_DISCOVERY_PODMAN_ENABLED="true" \
+    JAVA_OPTS_APPEND="" \
+    QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://localhost:5432/cryostat \
+    QUARKUS_DATASOURCE_PASSWORD=cryostat \
+    QUARKUS_DATASOURCE_USERNAME=cryostat \
+    QUARKUS_HIBERNATE_ORM_DATABASE_GENERATION=none \
+    QUARKUS_HIBERNATE_ORM_SQL_LOAD_SCRIPT=no-file \
+    QUARKUS_HTTP_HOST=localhost \
+    QUARKUS_HTTP_PORT="8080" \
+    QUARKUS_LOG_LEVEL=ERROR \
+    QUARKUS_REST_CLIENT_LOGGING_SCOPE=request-response \
+    QUARKUS_S3_AWS_REGION=us-east-1 \
+    QUARKUS_S3_ENDPOINT_OVERRIDE=http://localhost:8333 \
+    QUARKUS_S3_PATH_STYLE_ACCESS="true" \
+    STORAGE_EXT_URL=/storage/ \
+    STORAGE_METADATA_STORAGE_MODE=tagging \
+    STORAGE_PRESIGNED_DOWNLOADS_ENABLED="true" \
+    STORAGE_PRESIGNED_TRANSFERS_ENABLED="true" \
+    java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar"

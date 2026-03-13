@@ -1,0 +1,6 @@
+[submodule "cryostat"]
+	path = cryostat
+	url = https://github.com/cryostatio/cryostat
+[submodule "cryostat-agent"]
+	path = cryostat-agent
+	url = https://github.com/cryostatio/cryostat-agent
