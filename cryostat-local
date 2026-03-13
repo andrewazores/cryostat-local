@@ -20,7 +20,7 @@ java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
     -Dcryostat.agent.callback.host-name=localhost \
     -Dcryostat.agent.harvester.template=Continuous \
     -Dcryostat.agent.harvester.period-ms=10000 \
-    -Dcryostat.agent.harvester.max-files=1 &
+    -Dcryostat.agent.harvester.max-files=6 &
 
 agent_pid=$!
 
