@@ -4,3 +4,6 @@
 [submodule "cryostat-agent"]
 	path = cryostat-agent
 	url = https://github.com/cryostatio/cryostat-agent
+[submodule "cryostat-mcp"]
+	path = cryostat-mcp
+	url = https://github.com/andrewazores/cryostat-mcp
