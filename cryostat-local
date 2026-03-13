@@ -57,4 +57,7 @@ AWS_ACCESS_KEY_ID=access_key \
     java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1 &
 cryostat_pid=$!
 
-java -jar "${DIR}/bin/cryostat-mcp-1.0.0-SNAPSHOT-runner.jar"
+java \
+    -XX:+EnableDynamicAgentLoading \
+    -Dquarkus.smallrye-graphql-client.cryostat.header.Authorization=unused \
+    -jar "${DIR}/bin/cryostat-mcp-1.0.0-SNAPSHOT-runner.jar"
