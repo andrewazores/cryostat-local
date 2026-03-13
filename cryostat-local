@@ -24,7 +24,7 @@ java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
 
 agent_pid=$!
 
-while ! podman exec -it cryostat-local-db-1 sh -c 'pg_isready -U cryostat -d cryostat || exit 1' >/dev/null 2>&1 ; do
+while ! podman exec -it cryostat-local-db-1 sh -c 'pg_isready -p 5444 -U cryostat -d cryostat || exit 1' >/dev/null 2>&1 ; do
     sleep 2
 done
 sleep "${ADDITIONAL_DB_START_SECONDS:-2}"
