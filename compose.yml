@@ -5,11 +5,11 @@ services:
     restart: always
     hostname: db
     expose:
-      - "5432"
+      - "5444"
     ports:
       - mode: ingress
-        target: 5432
-        published: "5432"
+        target: 5444
+        published: "5444"
         protocol: tcp
     environment:
       PG_ENCRYPT_KEY: REPLACEME
