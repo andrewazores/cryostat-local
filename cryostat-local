@@ -14,7 +14,7 @@ docker compose --file "${DIR}/compose.yml" up --detach >/dev/null 2>&1
 java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
     --watch \
     -Dio.cryostat.agent.shaded.org.slf4j.simpleLogger.defaultLogLevel=off \
-    -Dcryostat.agent.baseuri=http://localhost:8080 \
+    -Dcryostat.agent.baseuri=http://localhost:8282 \
     -Dcryostat.agent.webclient.tls.required=false \
     -Dcryostat.agent.callback.scheme=http \
     -Dcryostat.agent.callback.host-name=localhost \
