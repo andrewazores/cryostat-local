@@ -13,11 +13,6 @@ pushd "${DIR}/cryostat-agent" || exit
 popd || exit
 cp "${DIR}"/cryostat-agent/target/cryostat-agent-*-shaded.jar "${DIR}/bin/"
 
-pushd "${DIR}/cryostat-mcp" || exit
-./mvnw -DskipTests clean package
-popd || exit
-cp "${DIR}"/cryostat-mcp/target/cryostat-mcp-*-runner.jar "${DIR}/bin/"
-
 pushd "${DIR}/cryostat" || exit
 git submodule init && git submodule update
 ./mvnw \

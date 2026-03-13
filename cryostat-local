@@ -5,7 +5,6 @@ DIR="$(dirname "$(readlink -f "$0")")"
 function cleanup() {
     docker compose --file "${DIR}/compose.yml" down --volumes >/dev/null 2>&1
     kill "${agent_pid}" >/dev/null 2>&1
-    kill "${cryostat_pid}" >/dev/null 2>&1
 }
 trap cleanup EXIT
 
@@ -54,7 +53,4 @@ AWS_ACCESS_KEY_ID=access_key \
     STORAGE_METADATA_STORAGE_MODE=tagging \
     STORAGE_PRESIGNED_DOWNLOADS_ENABLED="true" \
     STORAGE_PRESIGNED_TRANSFERS_ENABLED="true" \
-    java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1 &
-cryostat_pid=$!
-
-java -jar "${DIR}/bin/cryostat-mcp-1.0.0-SNAPSHOT-runner.jar"
+    java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1
