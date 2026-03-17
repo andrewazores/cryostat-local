@@ -36,7 +36,6 @@ AWS_ACCESS_KEY_ID=access_key \
     CRYOSTAT_AGENT_TLS_REQUIRED="false" \
     CRYOSTAT_AUDIT_ENABLED="true" \
     CRYOSTAT_DISCOVERY_JDP_ENABLED="true" \
-    JAVA_OPTS_APPEND="" \
     QUARKUS_DATASOURCE_JDBC_URL=jdbc:postgresql://localhost:5444/cryostat \
     QUARKUS_DATASOURCE_PASSWORD=cryostat \
     QUARKUS_DATASOURCE_USERNAME=cryostat \
