@@ -1,5 +1,10 @@
 #!/usr/bin/env bash
 
+if [ "$#" -eq 0 ]; then
+    echo "At least one filter keyword (Java Main-Class name or JAR path substring) must be provided!" > /dev/stderr
+    exit 1
+fi
+
 DIR="$(dirname "$(readlink -f "$0")")"
 
 function cleanup() {
@@ -12,7 +17,6 @@ cleanup
 docker compose --file "${DIR}/compose.yml" up --detach >/dev/null 2>&1
 
 java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
-    --watch \
     -Dio.cryostat.agent.shaded.org.slf4j.simpleLogger.defaultLogLevel=off \
     -Dcryostat.agent.api.writes-enabled=true \
     -Dcryostat.agent.baseuri=http://localhost:8282 \
@@ -22,7 +26,8 @@ java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
     -Dcryostat.agent.harvester.template=Continuous \
     -Dcryostat.agent.harvester.period-ms=30000 \
     -Dcryostat.agent.harvester.max-size-b=20971520 \
-    -Dcryostat.agent.harvester.max-files=5 &
+    -Dcryostat.agent.harvester.max-files=5 \
+    --watch --watch-include "$@" &
 
 agent_pid=$!
 
