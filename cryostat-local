@@ -16,7 +16,8 @@ trap cleanup EXIT
 cleanup
 docker compose --file "${DIR}/compose.yml" up --detach >/dev/null 2>&1
 
-java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
+# TODO this should not use --fresh for release (non-SNAPSHOT) versions
+jbang --quiet --fresh io.cryostat:cryostat-agent:0.7.0-SNAPSHOT:shaded \
     -Dio.cryostat.agent.shaded.org.slf4j.simpleLogger.defaultLogLevel=off \
     -Dcryostat.agent.api.writes-enabled=true \
     -Dcryostat.agent.baseuri=http://localhost:8282 \

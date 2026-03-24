@@ -8,11 +8,6 @@ mkdir -p "${DIR}/bin"
 
 git submodule init && git submodule update
 
-pushd "${DIR}/cryostat-agent" || exit
-./mvnw -DskipTests clean package
-popd || exit
-cp "${DIR}"/cryostat-agent/target/cryostat-agent-*-shaded.jar "${DIR}/bin/"
-
 pushd "${DIR}/cryostat" || exit
 git submodule init && git submodule update
 ./mvnw \
