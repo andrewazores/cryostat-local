@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if ! command -v jbang >/dev/null 2>&1; then
+    echo "jbang is required"
+    exit 1
+fi
+
+if ! command -v docker >/dev/null 2>&1; then
+    echo "docker is required"
+    exit 1
+fi
+
 if [ "$#" -eq 0 ]; then
     echo "At least one filter keyword (Java Main-Class name or JAR path substring) must be provided!" > /dev/stderr
     exit 1
@@ -16,7 +26,8 @@ trap cleanup EXIT
 cleanup
 docker compose --file "${DIR}/compose.yml" up --detach >/dev/null 2>&1
 
-java -jar "${DIR}/bin/cryostat-agent-0.7.0-SNAPSHOT-shaded.jar" \
+# TODO this should not use --fresh for release (non-SNAPSHOT) versions
+jbang --quiet --fresh io.cryostat:cryostat-agent:0.7.0-SNAPSHOT:shaded \
     -Dio.cryostat.agent.shaded.org.slf4j.simpleLogger.defaultLogLevel=off \
     -Dcryostat.agent.api.writes-enabled=true \
     -Dcryostat.agent.baseuri=http://localhost:8282 \
@@ -57,4 +68,4 @@ AWS_ACCESS_KEY_ID=access_key \
     STORAGE_METADATA_STORAGE_MODE=tagging \
     STORAGE_PRESIGNED_DOWNLOADS_ENABLED=false \
     STORAGE_PRESIGNED_TRANSFERS_ENABLED=false \
-    java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1
+    jbang "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1
