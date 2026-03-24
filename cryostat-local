@@ -68,4 +68,4 @@ AWS_ACCESS_KEY_ID=access_key \
     STORAGE_METADATA_STORAGE_MODE=tagging \
     STORAGE_PRESIGNED_DOWNLOADS_ENABLED=false \
     STORAGE_PRESIGNED_TRANSFERS_ENABLED=false \
-    java -jar "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1
+    jbang "${DIR}/bin/cryostat-4.2.0-SNAPSHOT-runner.jar" >/dev/null 2>&1
