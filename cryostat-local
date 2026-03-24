@@ -1,5 +1,15 @@
 #!/usr/bin/env bash
 
+if ! command -v jbang >/dev/null 2>&1; then
+    echo "jbang is required"
+    exit 1
+fi
+
+if ! command -v docker >/dev/null 2>&1; then
+    echo "docker is required"
+    exit 1
+fi
+
 if [ "$#" -eq 0 ]; then
     echo "At least one filter keyword (Java Main-Class name or JAR path substring) must be provided!" > /dev/stderr
     exit 1
